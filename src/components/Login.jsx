@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import React, { useState } from "react";
 import auth from "./farebase.init";
 import { FiEye } from "react-icons/fi";
@@ -15,12 +15,18 @@ const Login = () => {
     const password = e.target.password.value;
     const terms = e.target.terms.checked;
 
+    // Email verification sent!
+    sendEmailVerification(auth.currentUser)
+    .then(() => {
+      // Email verification sent!
+      console.log("Email verification sent!")
+    });
 
     setError("");
     setSuccess(false);
 
-    if(!terms){
-      setError("Please accepts our terms and conditions")
+    if (!terms) {
+      setError("Please accepts our terms and conditions");
       return;
     }
 
@@ -53,7 +59,7 @@ const Login = () => {
   return (
     <div className="flex justify-center my-24">
       <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-        <h1 className="text-4xl font-bold text-accent text-center">LogIn</h1>
+        <h1 className="text-4xl font-bold text-accent text-center">Register</h1>
         <form className="card-body" onSubmit={handleFormSubmit}>
           <div className="form-control">
             <label className="label">
@@ -101,7 +107,9 @@ const Login = () => {
                 name="terms"
                 className="checkbox checkbox-success"
               />
-              <span className="label-text ml-6">Accept Our TermsAnd Condions</span>
+              <span className="label-text ml-6">
+                Accept Our TermsAnd Condions
+              </span>
             </label>
           </div>
 
