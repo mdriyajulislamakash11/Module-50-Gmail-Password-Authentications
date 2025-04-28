@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import auth from "./farebase.init";
 
 const Login = () => {
-  const [success, setSuccess] = useState(false)
+  const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
   const handleFormSubmit = (e) => {
@@ -11,23 +11,32 @@ const Login = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    setError("")
-    setSuccess(false)
+    setError("");
+    setSuccess(false);
 
-    if(password.length < 6){
-      setError("Password Shoud be 6 characters or longer")
-      return
+    if (password.length < 6) {
+      setError("Password Shoud be 6 characters or longer");
+      return;
+    }
+
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+    if (!passwordRegex.test(password)) {
+      setError(
+        "Password must be at least 8 characters long, include uppercase, lowercase, number, and special character."
+      );
+      return;
     }
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
         console.log(result.user);
-        setSuccess(true)
+        setSuccess(true);
       })
       .catch((error) => {
-        console.log(error)
-        setError(error.message)
-        setSuccess(false)
+        console.log(error);
+        setError(error.message);
+        setSuccess(false);
       });
   };
 
@@ -68,13 +77,9 @@ const Login = () => {
           </div>
         </form>
 
-        {
-          error && <p className="text-red-600">{error}</p>
-        }
+        {error && <p className="text-red-600">{error}</p>}
 
-        {
-          success && <p className="text-green-600">login is SuccessFully</p>
-        }
+        {success && <p className="text-green-600">login is SuccessFully</p>}
       </div>
     </div>
   );
