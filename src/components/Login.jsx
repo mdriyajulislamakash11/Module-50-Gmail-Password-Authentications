@@ -7,19 +7,25 @@ import { FaRegEyeSlash } from "react-icons/fa";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [success, setSuccess] = useState(false);
-
   const [error, setError] = useState("");
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
+    const terms = e.target.terms.checked;
+
 
     setError("");
     setSuccess(false);
 
+    if(!terms){
+      setError("Please accepts our terms and conditions")
+      return;
+    }
+
     if (password.length < 6) {
-      setError("Password Shoud be 6 characters or longer");
+      setError("Password should be at least 6 characters or longer");
       return;
     }
 
@@ -27,7 +33,7 @@ const Login = () => {
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
     if (!passwordRegex.test(password)) {
       setError(
-        "Password must be at least 8 characters long, include uppercase, lowercase, number, and special character."
+        "Password must include uppercase, lowercase, number, and special character."
       );
       return;
     }
@@ -61,22 +67,24 @@ const Login = () => {
             />
           </div>
 
-          <div className="form-control">
+          <div className="form-control relative">
             <label className="label">
               <span className="label-text">Password</span>
             </label>
+
             <input
               type={showPassword ? "text" : "password"}
               name="password"
               placeholder="password"
-              className="input input-bordered"
+              className="input input-bordered pr-10"
             />
 
-            <button onClick={() => setShowPassword(!showPassword)} className="btn btn-xs absolute right-12 top-[165px]  ">
-              {
-                showPassword ? <FaRegEyeSlash /> : <FiEye />
-              }
-              
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-6 top-8 text-xl text-gray-400"
+            >
+              {showPassword ? <FaRegEyeSlash /> : <FiEye />}
             </button>
 
             <label className="label">
@@ -85,14 +93,27 @@ const Login = () => {
               </a>
             </label>
           </div>
+
+          <div className="form-control mt-1">
+            <label className="cursor-pointer label">
+              <input
+                type="checkbox"
+                name="terms"
+                className="checkbox checkbox-success"
+              />
+              <span className="label-text ml-6">Accept Our TermsAnd Condions</span>
+            </label>
+          </div>
+
           <div className="form-control mt-6">
             <button className="btn btn-accent w-full">Login</button>
           </div>
         </form>
 
-        {error && <p className="text-red-600">{error}</p>}
-
-        {success && <p className="text-green-600">login is SuccessFully</p>}
+        {error && <p className="text-red-600 text-center mt-2">{error}</p>}
+        {success && (
+          <p className="text-green-600 text-center mt-2">Login Successful!</p>
+        )}
       </div>
     </div>
   );
