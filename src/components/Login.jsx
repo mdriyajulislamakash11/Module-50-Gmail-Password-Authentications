@@ -1,9 +1,13 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import auth from "./farebase.init";
+import { FiEye } from "react-icons/fi";
+import { FaRegEyeSlash } from "react-icons/fa";
 
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const [success, setSuccess] = useState(false);
+
   const [error, setError] = useState("");
 
   const handleFormSubmit = (e) => {
@@ -56,16 +60,25 @@ const Login = () => {
               className="input input-bordered"
             />
           </div>
+
           <div className="form-control">
             <label className="label">
               <span className="label-text">Password</span>
             </label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
               placeholder="password"
               className="input input-bordered"
             />
+
+            <button onClick={() => setShowPassword(!showPassword)} className="btn btn-xs absolute right-12 top-[165px]  ">
+              {
+                showPassword ? <FaRegEyeSlash /> : <FiEye />
+              }
+              
+            </button>
+
             <label className="label">
               <a href="#" className="label-text-alt link link-hover">
                 Forgot password?
