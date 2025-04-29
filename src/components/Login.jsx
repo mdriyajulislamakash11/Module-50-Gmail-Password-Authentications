@@ -1,4 +1,8 @@
-import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  updateProfile,
+} from "firebase/auth";
 import React, { useState } from "react";
 import auth from "./farebase.init";
 import { FiEye } from "react-icons/fi";
@@ -11,16 +15,15 @@ const Login = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    const name = e.target.name.value;
+    const photo = e.target.photo.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
     const terms = e.target.terms.checked;
 
-    // Email verification sent!
-    sendEmailVerification(auth.currentUser)
-    .then(() => {
-      // Email verification sent!
-      console.log("Email verification sent!")
-    });
+    console.log(name, photo)
+
+
 
     setError("");
     setSuccess(false);
@@ -48,6 +51,25 @@ const Login = () => {
       .then((result) => {
         console.log(result.user);
         setSuccess(true);
+
+            // Email verification sent!
+    sendEmailVerification(auth.currentUser).then(() => {
+      console.log("Email verification sent!");
+    });
+
+    //Ubdate ProfileUser
+    const profile = {
+      displayName: name,
+      photoURL: photo,
+    };
+
+    updateProfile(auth.currentUser, profile)
+      .then(() => {
+        console.log("ubdate user profle");
+      })
+      .catch((error) => console.log(error));
+
+
       })
       .catch((error) => {
         console.log(error);
@@ -62,6 +84,26 @@ const Login = () => {
         <h1 className="text-4xl font-bold text-accent text-center">Register</h1>
         <form className="card-body" onSubmit={handleFormSubmit}>
           <div className="form-control">
+            <label className="label">
+              <span className="label-text">Name</span>
+            </label>
+            <input
+              type="text"
+              name="name"
+              placeholder="name"
+              className="input input-bordered"
+            />
+
+            <label className="label">
+              <span className="label-text">Photo URL</span>
+            </label>
+            <input
+              type="text"
+              name="photo"
+              placeholder="photo URL"
+              className="input input-bordered"
+            />
+
             <label className="label">
               <span className="label-text">Email</span>
             </label>
