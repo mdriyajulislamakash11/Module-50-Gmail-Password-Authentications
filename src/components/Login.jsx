@@ -7,7 +7,6 @@ import React, { useState } from "react";
 import auth from "./farebase.init";
 import { FiEye } from "react-icons/fi";
 import { FaRegEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,9 +21,7 @@ const Login = () => {
     const password = e.target.password.value;
     const terms = e.target.terms.checked;
 
-    console.log(name, photo)
-
-
+    console.log(name, photo);
 
     setError("");
     setSuccess(false);
@@ -34,11 +31,13 @@ const Login = () => {
       return;
     }
 
+    // password sadaron validations
     if (password.length < 6) {
       setError("Password should be at least 6 characters or longer");
       return;
     }
 
+    // password stron validations
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
     if (!passwordRegex.test(password)) {
@@ -48,27 +47,34 @@ const Login = () => {
       return;
     }
 
+
+
+
+
+
+
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
         console.log(result.user);
         setSuccess(true);
 
-            // Email verification sent!
-    sendEmailVerification(auth.currentUser).then(() => {
-      console.log("Email verification sent!");
-    });
+        // Email verification sent!
+        sendEmailVerification(auth.currentUser)
+        .then(() => {
+          console.log("Email verification sent!");
+        });
 
-    //Ubdate ProfileUser
-    const profile = {
-      displayName: name,
-      photoURL: photo,
-    };
+        //Ubdate ProfileUser
+        const profile = {
+          displayName: name,
+          photoURL: photo,
+        };
 
-    updateProfile(auth.currentUser, profile)
-      .then(() => {
-        console.log("ubdate user profle");
-      })
-      .catch((error) => console.log(error));
+        updateProfile(auth.currentUser, profile)
+          .then(() => {
+            console.log("ubdate user profle");
+          })
+          .catch((error) => console.log(error));
 
 
       })
