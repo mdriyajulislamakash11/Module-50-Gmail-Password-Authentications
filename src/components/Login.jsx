@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import auth from "./farebase.init";
 import { FiEye } from "react-icons/fi";
 import { FaRegEyeSlash } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
